@@ -16,7 +16,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
        sudo \
        supervisor \
        unzip \
-       wget
+       ca-certificates \
+       wget 
+
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && curl -s https://packages.icinga.com/icinga.key \
@@ -29,12 +31,19 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       nagios-nrpe-plugin \
       nagios-plugins-contrib \
       nagios-snmp-plugins \
+      libnet-ssleay-perl \
+      libio-socket-ssl-perl \
+      libtext-glob-perl \
+      libio-all-lwp-perl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
+
+
+COPY ./anordby/plugins/nagios/* /usr/lib/anordby/plugins/
 
 
 EXPOSE 5665
 
 # Initialize and run Supervisor
-ENTRYPOINT ["/opt/run"]
+# ENTRYPOINT ["/opt/run"]
 
